@@ -1,3 +1,4 @@
+//Extra lines of code, add if needed
 GameModel newGm = (GameModel)super.clone();
     	newGm.model = (int[][])model.clone();
     	newGm.currentDot = (Point)currentDot.clone();
