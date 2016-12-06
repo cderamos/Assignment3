@@ -51,6 +51,7 @@ public class GameModel implements Cloneable {
 
     private Random generator;
 
+    private GameModel clone;
     /**
      * Constructor to initialize the model to a given size of board.
      * 
@@ -61,26 +62,28 @@ public class GameModel implements Cloneable {
         numberOfSteps = 0;
         generator = new Random();
         sizeOfGame = size;
-
+       
         reset();
+        
     }
-    
+    /**
+     * Create a copy of the constructor/variables
+     * @param other
+     */
     public GameModel(GameModel other)
     {
     	numberOfSteps = other.numberOfSteps;
     	currentDot = new Point(other.currentDot);
     	sizeOfGame = other.sizeOfGame;
     	generator = new Random();
-    	  model = new int[sizeOfGame][sizeOfGame];
-
+    	
+    	model = new int[sizeOfGame][sizeOfGame];
           for(int i = 0; i < sizeOfGame; i++){
               for(int j = 0; j < sizeOfGame; j++){
                   model[i][j] = other.model[i][j];
               }
           }
     }
-
-
     /**
      * Resets the model to (re)start a game. The previous game (if there is one)
      * is cleared up . The blue dot is positioned as per instructions, and each 
@@ -141,8 +144,6 @@ public class GameModel implements Cloneable {
         return model;
     }
 
-
-
     /**
      * returns the current status (AVAILABLE, SELECTED or DOT) of a given dot in the game
      * 
@@ -189,7 +190,6 @@ public class GameModel implements Cloneable {
             currentDot.reset(i,j);
         }
     }
-
     /**
      * Getter method for the current blue dot
      * 
@@ -198,7 +198,6 @@ public class GameModel implements Cloneable {
     public Point getCurrentDot(){
         return currentDot;
     }
-
     /**
      * Getter method for the current number of steps
      * 
@@ -207,15 +206,19 @@ public class GameModel implements Cloneable {
     public int getNumberOfSteps(){
         return numberOfSteps;
     }
-    
-    //Cloning
+    /**
+     * Clone gameModel, override
+     * Return the cloned gameModel
+     */
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-    	try {
-    		return super.clone();
+    protected GameModel clone() throws CloneNotSupportedException {
+    	clone = new GameModel(sizeOfGame);
+    	for(int i =0; i<sizeOfGame; i++){
+    		for(int j =0; j<sizeOfGame; j++){
+    			clone.model[i][j] = model[i][j];
+    		}
+    		clone.setCurrentDot(currentDot.getX(), currentDot.getY());
     	}
-    	catch (CloneNotSupportedException e) {
-    		throw new InternalError(e.toString());
-    	}
+    	return clone;
     }
 }
